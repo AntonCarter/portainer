@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
   portainer:
@@ -8,7 +8,7 @@ services:
         constraints:
           - "node.role==manager"
     networks:
-      - edge
+      - web
     volumes:
       - portainer_data:/data portainer/portainer-ce
       - /var/run/docker.sock:/var/run/docker.sock
@@ -28,6 +28,6 @@ volumes:
     driver: local
     
 networks:
-  edge:
+  web:
     external:
       name: edge
