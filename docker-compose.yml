@@ -14,7 +14,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.portainerloadbalancer.server.port=9000"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
       - "traefik.http.middlewares.#{SubDomain}-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.#{SubDomain}-http.entrypoints=web"
       - "traefik.http.routers.#{SubDomain}-http.middlewares=#{SubDomain}-https-redirect@docker"
