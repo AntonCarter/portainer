@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+    networks:
+      - edge
+    volumes:
+      - portainer_data:/data portainer/portainer-ce
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.#{SubDomain}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.#{SubDomain}-http.entrypoints=web"
+      - "traefik.http.routers.#{SubDomain}-http.middlewares=#{SubDomain}-https-redirect@docker"
+      - "traefik.http.routers.#{SubDomain}-http.rule=Host(`#{HostUrl}`)"
+      - "traefik.http.routers.#{SubDomain}-https.entrypoints=websecure"
+      - "traefik.http.routers.#{SubDomain}-https.rule=Host(`#{HostUrl}`)"
+      - "traefik.http.routers.#{SubDomain}-https.tls.certresolver=myresolver"    
+
+volumes:
+  portainer_data:
+    driver: local
+    
+networks:
+  edge:
+    external:
+      name: edge
